@@ -1,0 +1,110 @@
+{% extends 'fab_food/base.html' %}
+
+{% block title %}Add Restaurant{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add/Edit Restaurant Information</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% if error_message %}
+                        <div class="alert alert-danger fade in">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>Error!</strong> {{ error_message }}
+                        </div>
+                        {% endif %}
+                        {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'info' or message.tags == 'success' %}
+                                        <div class="alert alert-success fade in">
+                                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                            <strong>Success!  {{ message }} </strong>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-danger fade in">
+                                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                            <strong>Error!  {{ message }} </strong>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        <form role="form" id="restaurantForm"  method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group col-lg-12">
+                                <label>Restaurant Image</label>
+                                <input type="file" name="image" id="image" class="img"/>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Restaurant Name</label>
+                                <input class="form-control" type="text" id="name" name="name"
+                                       value="{{form.name.value|default:''}}">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Restaurant Email</label>
+                                <input class="form-control" type="email" id="email" name="email"
+                                       value="{{form.email.value|default:''}}">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Landline Number</label>
+                                <input class="form-control" type="text" id="telephone" name="telephone"
+                                       value="{{form.telephone.value|default:''}}">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Website</label>
+                                <input class="form-control" type="text" id="url" name="url"
+                                       value="{{form.url.value|default:''}}">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Mobile Number</label>
+                                <input class="form-control" type="text" id="cell_phone" name="cell_phone"
+                                       value="{{form.cell_phone.value|default:''}}">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Street</label>
+                                <textarea class="form-control" id="street" name="street" rows="1" cols="2"></textarea>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Address</label>
+                                <input class="form-control" type="text" name="address" value="">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>City</label>
+                                <input class="form-control" type="text" name="city" value="">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>State</label>
+                                <select name="state" class="form-control">
+                                    <option value="-1">-- Select State -- </option>
+                                    {% for state in states %}
+                                    <option value="{{state.id}}"> {{state.name}} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Zip</label>
+                                <input class="form-control" type="text" id="zip" name="zip"
+                                       value="">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
