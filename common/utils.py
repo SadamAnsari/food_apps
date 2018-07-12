@@ -52,4 +52,20 @@ def send_templated_email(subject, email_template_name, email_context, recipients
         return False
 
 
+def read_csv_file():
+    import csv
+    file_path = r"E:\Sample Codes\Python\DJANGO_FOOD\fab_food\common\zomato.csv"
+    csv_file = open(file_path)
+    csv_reader = csv.DictReader(csv_file)
+    cuisine_type = list()
+    for row in csv_reader:
+        if row['Country Code'] == '1' and row['City']:
+            cuisine = row['Cuisines'].split(',')
+            for item in cuisine:
+                if item.strip() not in cuisine_type:
+                    cuisine_type.append(item.strip())
+    print(cuisine_type, len(cuisine_type))
+# read_csv_file()
+
+
 

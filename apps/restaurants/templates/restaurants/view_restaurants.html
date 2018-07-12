@@ -1,0 +1,83 @@
+{% extends 'fab_food/base.html' %}
+
+{% block title %}View Restaurants{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Restaurant Details</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == 'info' or message.tags == 'success' %}
+                                    <div class="alert alert-success fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Success!  {{ message }} </strong>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Error!  {{ message }} </strong>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="content table-responsive table-full-width">
+                            {% if restaurants %}
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Website</th>
+                                    <th>Mobile Number</th>
+                                    <th>Landline Number</th>
+                                    <th>Address</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                </thead>
+                                <tbody>
+                                {% for client in restaurants %}
+                                <tr>
+                                    <td><a href="{% url 'restaurant:update_restaurant' id=client.id %}">
+                                            <i class="fa fa-pencil-square-o fa-2" aria-hidden="true"></i>
+                                        </a>&nbsp;&nbsp;&nbsp;
+                                        <a href="{% url 'restaurant:delete_restaurant' id=client.id %}">
+                                            <i class="fa fa-trash-o fa-2" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{client.name}}</td>
+                                    <td>{{client.email}}</td>
+                                    <td>{{client.url}}</td>
+                                    <td>{{client.cell_phone}}</td>
+                                    <td>{{client.telephone}}</td>
+                                    <td>{{client.address.address}}</td>
+                                    <td>{{client.address.city}}</td>
+                                    <td>{{client.address.state.name}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p>No Restaurant added</p>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}

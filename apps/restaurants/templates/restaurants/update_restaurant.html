@@ -1,13 +1,13 @@
 {% extends 'fab_food/base.html' %}
 
-{% block title %}Add Restaurant{% endblock %}
+{% block title %}Update Restaurant{% endblock %}
 
 {% block content %}
 <div id="page-wrapper">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Add/Edit Restaurant Information</h1>
+                <h1 class="page-header">Restaurant Details</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -36,7 +36,7 @@
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
-                        <form role="form" id="restaurantForm"  method="post" enctype="multipart/form-data">
+                        <form role="form" id="restaurantUpdateForm"  method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group col-lg-12">
                                 <label>Restaurant Image</label>
@@ -45,12 +45,12 @@
                             <div class="form-group col-lg-6">
                                 <label>Restaurant Name</label>
                                 <input class="form-control" type="text" id="name" name="name"
-                                       value="{{form.name.value|default:''}}">
+                                       value="{{profile.name}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Restaurant Email</label>
                                 <input class="form-control" type="email" id="email" name="email"
-                                       value="{{form.email.value|default:''}}">
+                                       value="{{profile.email}}">
                             </div>
                             <div class="form-group col-lg-12">
                                 <label>Cuisine Type</label>
@@ -65,43 +65,48 @@
                             <div class="form-group col-lg-6">
                                 <label>Landline Number</label>
                                 <input class="form-control" type="text" id="telephone" name="telephone"
-                                       value="{{form.telephone.value|default:''}}">
+                                       value="{{profile.telephone}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Website</label>
                                 <input class="form-control" type="text" id="url" name="url"
-                                       value="{{form.url.value|default:''}}">
+                                       value="{{profile.url}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Mobile Number</label>
                                 <input class="form-control" type="text" id="cell_phone" name="cell_phone"
-                                       value="{{form.cell_phone.value|default:''}}">
+                                       value="{{profile.cell_phone}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Street</label>
-                                <textarea class="form-control" id="street" name="street" rows="1" cols="2"></textarea>
+                                <textarea class="form-control" id="street" name="street" rows="1"
+                                          cols="2">{{profile.street|default:''}}
+                                </textarea>
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Address</label>
-                                <input class="form-control" type="text" name="address" value="">
+                                <input class="form-control" type="text" name="address"
+                                       value="{{profile.address.address}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>City</label>
-                                <input class="form-control" type="text" name="city" value="">
+                                <input class="form-control" type="text" name="city" value="{{ profile.address.city }}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>State</label>
                                 <select name="state" class="form-control">
                                     <option value="-1">-- Select State -- </option>
                                     {% for state in states %}
-                                    <option value="{{state.id}}"> {{state.name}} </option>
+                                        <option {% if state.id == profile.address.state.id %} selected {% endif %}
+                                            value="{{state.id}}">{{state.name}}
+                                        </option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Zip</label>
                                 <input class="form-control" type="text" id="zip" name="zip"
-                                       value="">
+                                       value="{{ profile.address.zip}}">
                             </div>
                             <div class="form-group col-lg-12">
                                 <button type="submit" class="btn btn-lg btn-success">Submit</button>
