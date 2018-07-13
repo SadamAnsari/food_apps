@@ -36,6 +36,7 @@
                                 <thead>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Cuisine Type</th>
                                     <th>Email</th>
                                     <th>Website</th>
                                     <th>Mobile Number</th>
@@ -55,6 +56,14 @@
                                         </a>
                                     </td>
                                     <td>{{client.name}}</td>
+                                    <td>{% for item in c_type|index:client.id %}
+                                            {% if not forloop.last %}
+                                                {{ item  }},
+                                            {% else %}
+                                                {{ item }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
                                     <td>{{client.email}}</td>
                                     <td>{{client.url}}</td>
                                     <td>{{client.cell_phone}}</td>

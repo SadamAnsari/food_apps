@@ -78,10 +78,6 @@
                                        value="{{form.cell_phone.value|default:''}}">
                             </div>
                             <div class="form-group col-lg-6">
-                                <label>Street</label>
-                                <textarea class="form-control" id="street" name="street" rows="1" cols="2"></textarea>
-                            </div>
-                            <div class="form-group col-lg-6">
                                 <label>Address</label>
                                 <input class="form-control" type="text" name="address" value="">
                             </div>
@@ -92,11 +88,16 @@
                             <div class="form-group col-lg-6">
                                 <label>State</label>
                                 <select name="state" class="form-control">
-                                    <option value="-1">-- Select State -- </option>
+                                    <option value="-1">--- Select State ---</option>
                                     {% for state in states %}
                                     <option value="{{state.id}}"> {{state.name}} </option>
                                     {% endfor %}
                                 </select>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label>Landmark</label>
+                                <input class="form-control" type="text" id="street" name="street"
+                                       value="{{form.street.value|default:''}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Zip</label>

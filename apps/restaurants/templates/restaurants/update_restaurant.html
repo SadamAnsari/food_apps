@@ -78,10 +78,9 @@
                                        value="{{profile.cell_phone}}">
                             </div>
                             <div class="form-group col-lg-6">
-                                <label>Street</label>
-                                <textarea class="form-control" id="street" name="street" rows="1"
-                                          cols="2">{{profile.street|default:''}}
-                                </textarea>
+                                <label>Landmark</label>
+                                <input class="form-control" type="text" id="street" name="street"
+                                       value="{{profile.street}}">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Address</label>
@@ -95,7 +94,7 @@
                             <div class="form-group col-lg-6">
                                 <label>State</label>
                                 <select name="state" class="form-control">
-                                    <option value="-1">-- Select State -- </option>
+                                    <option value="-1">--- Select State ---</option>
                                     {% for state in states %}
                                         <option {% if state.id == profile.address.state.id %} selected {% endif %}
                                             value="{{state.id}}">{{state.name}}

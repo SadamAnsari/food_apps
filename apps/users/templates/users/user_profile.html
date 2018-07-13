@@ -72,7 +72,7 @@
                             <div class="form-group col-lg-6">
                                 <label>State</label>
                                 <select name="state" class="form-control">
-                                    <option value="-1">-- Select State -- </option>
+                                    <option value="-1">--- Select State ---</option>
                                     {% for state in states %}
                                     <option {% if state.id == profile.address.state.id %} selected {% endif %}
                                             value="{{state.id}}">{{state.name}}

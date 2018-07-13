@@ -26,7 +26,7 @@ class CuisineType(models.Model):
 class Restaurant(Base):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    street = models.TextField(blank=True, null=True)
+    street = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
     telephone = models.CharField(max_length=20, blank=True, null=True)
     cell_phone = models.CharField(max_length=20, blank=True, null=True)
