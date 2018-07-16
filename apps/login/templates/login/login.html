@@ -45,32 +45,55 @@
                         <strong>Error!</strong> {{ error_message }}
                     </div>
                     {% endif %}
-                    {% if message %}
-                    <div class="alert alert-success fade in">
-                        <a href="#" class="close" data-dismiss="alert">&times;</a>
-                        <strong>{{ message }}</strong>
-                    </div>
-                    {% endif %}
+                    {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == 'info' or message.tags == 'success' %}
+                                    <div class="alert alert-success fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Success!  {{ message }} </strong>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Error!  {{ message }} </strong>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     <form class="form-signin" role="form" action="{% url 'login:login'%}" method="post"
                           enctype="multipart/form-data">
                         {% csrf_token %}
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Username" name="username" type="text" autofocus required>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="" required>
+                                </div>
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                </label>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                    <button type="submit" class="btn btn-lg btn-success ">Login</button>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
-                            <button type="submit" class="btn btn-lg btn-success ">Login</button>
-                            &nbsp;&nbsp;&nbsp;
-                            <a href="{% url 'login:signup'%}" class="btn btn-lg btn-success ">Signup</a>
-                        </fieldset>
+                            <div class="col-md-4">
+                                <a href="{% url 'login:signup'%}" class="btn btn-lg btn-success ">Signup</a>
+                            </div>
+                        </div><br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="/forgot_username/" class="login-txt">Forgot User Name</a>
+                            </div>
+                            <div class="col-md-6">
+                               <a href="/password_reset/" class="login-txt">Forgot Password</a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

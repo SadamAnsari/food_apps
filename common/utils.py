@@ -14,14 +14,14 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 def send_templated_email(subject, email_template_name, email_context, recipients,
                          sender=None, bcc=None, fail_silently=True, files=None):
 
-    c = Context(email_context)
+    # c = Context(email_context)
     if not sender:
         sender = settings.DEFAULT_FROM_EMAIL
 
     template = loader.get_template(email_template_name)
 
-    text_part = strip_tags(template.render(c))
-    html_part = template.render(c)
+    text_part = strip_tags(template.render(email_context))
+    html_part = template.render(email_context)
 
     if type(recipients) == str:
         if recipients.find(','):
@@ -29,11 +29,7 @@ def send_templated_email(subject, email_template_name, email_context, recipients
     elif type(recipients) != list:
         recipients = [recipients, ]
 
-    msg = EmailMultiAlternatives(subject,
-                                 text_part,
-                                 sender,
-                                 recipients,
-                                 bcc=bcc)
+    msg = EmailMultiAlternatives(subject, text_part, sender, recipients, bcc=bcc)
     msg.attach_alternative(html_part, "text/html")
 
     if files:

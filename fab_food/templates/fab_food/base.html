@@ -58,8 +58,8 @@
                     <i class="fa fa-user fa-fw"></i> Welcome {{user.first_name}} {{user.last_name}} <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="{% url 'user:profile' %}"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
+                    <li><a href="{% url 'user:profile' %}"><i class="fa fa-user fa-fw"></i> User Profile</a></li><li>
+                    <a href="{% url 'login:change_password' %}"><i class="fa fa-lock fa-fw"></i>Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="{% url 'login:logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
