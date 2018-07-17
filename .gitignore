@@ -1,4 +1,4 @@
 *.pyc
 log/
 .idea/
-local_setting.py
+fab_food/local_settings.py
