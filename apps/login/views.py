@@ -15,6 +15,11 @@ from django.shortcuts import render, redirect
 from common.utils import send_templated_email
 from apps.login.forms import SignUpForm, PasswordChangeCustomForm, ForgotUsernameForm
 from apps.users.models import Profile
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from .tokens import account_activation_token
+from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +63,58 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'login/signup.html', {'form': form})
+
+# def signup(request):
+#     if request.method == 'POST':
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             instance = form.save(commit=False)
+#             instance.is_active = False
+#             instance.save()
+#             Profile.objects.create(user=instance, first_name=instance.first_name,
+#                                    last_name=instance.last_name, email=instance.email)
+#             current_site = get_current_site(request)
+#             subject = 'Activate Your {0} Account'.format("FabFood")
+#             try:
+#                 send_templated_email(subject=subject, email_template_name='login/account_activation_email.html',
+#                                      email_context={
+#                                                         'user': instance,
+#                                                         'domain': current_site.domain,
+#                                                         'uid': urlsafe_base64_encode(force_bytes(instance.pk)),
+#                                                         'token': account_activation_token.make_token(instance),
+#                                                     },
+#                                      recipients=instance.email)
+#             except Exception as ex:
+#                 logger.exception("Failed to sent forgot_username email.")
+#                 logger.critical(
+#                     "Caught exception in {}".format(__file__),
+#                     exc_info=True
+#                 )
+#             return redirect('/account_activation_sent/')
+#     else:
+#         form = SignUpForm()
+#     return render(request, 'login/signup.html', {'form': form, 'error_message': form.errors})
+
+
+def account_activation_sent(request):
+    return render(request, 'login/account_activation_sent.html')
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.profile.email_confirmed = True
+        user.save()
+        auth_login(request, user)
+        return redirect('user:profile')
+    else:
+        return render(request, 'login/account_activation_invalid.html')
+
 
 
 @login_required
