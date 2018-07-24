@@ -1,0 +1,114 @@
+{% extends 'fab_food/base.html' %}
+
+{% block title %}Add Food Item{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add/Update Food Item</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% if error_message %}
+                        <div class="alert alert-danger fade in">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>Error!</strong> {{ error_message }}
+                        </div>
+                        {% endif %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == 'info' or message.tags == 'success' %}
+                                    <div class="alert alert-success fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Success!  {{ message }} </strong>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Error!  {{ message }} </strong>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Food Image</label>
+                                        <input type="file" name="image" id="image" class="img"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label name="restaurant">Select Restaurant</label>
+                                        <select name="restaurant" class="form-control">
+                                            <option value="-1">--- Select Restaurant ---</option>
+                                            {% for company in restaurants %}
+                                                <option value="{{company.id}}">{{company.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label name="cuisine">Select Cuisine</label>
+                                        <select name="cuisine" class="form-control">
+                                            <option value="-1">--- Select Cuisine ---</option>
+                                            {% for company in cuisine_types %}
+                                                <option value="{{company.id}}">{{company.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name</label> <input type="text"
+                                                                          class="form-control" name="name"
+                                                                          placeholder="Enter Food Name"
+                                                                          value="{{profile.name}}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Price (Rs.)</label>
+                                        <input type="text" class="form-control" name="price" value="{{profile.price}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea rows="3" class="form-control" name="description"
+                                                  placeholder="Enter Food Description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-12">
+                                <button type="submit" class="btn btn-lg btn-success">Submit</button>
+                            </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}

@@ -11,3 +11,13 @@ class ReviewStar:
         Four: "Four",
         Five: "Five"
     }
+
+class Course:
+    Starter = 1
+    MainCourse = 2
+    Desert = 3
+    FieldStr = {
+        Starter: "Starter",
+        MainCourse: "Main Course",
+        Desert: "Desert"
+    }

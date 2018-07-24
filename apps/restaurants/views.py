@@ -1,7 +1,7 @@
 import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import RestaurantForm
+from .forms import RestaurantForm, FoodItemForm
 from apps.masters.models import State
 from apps.users.forms import EditAddressForm
 from django.contrib import messages
@@ -90,4 +90,13 @@ def delete_restaurant(request, id):
     restaurants = Restaurant.objects.filter(user__id=profile.id)
     data = {"restaurants": restaurants}
     return render(request, template_name="restaurants/view_restaurants.html", context=data)
+
+
+@login_required
+def add_food_item(request):
+    restaurants = Restaurant.objects.all()
+    cuisine_types = CuisineType.objects.order_by('name')
+    form = FoodItemForm()
+    data = {'form': form, 'restaurants': restaurants, 'cuisine_types': cuisine_types}
+    return render(request, template_name="restaurants/food_item.html", context=data)
 

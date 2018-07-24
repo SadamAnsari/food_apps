@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from common.base_model import Base
-from .constants import ReviewStar
+from .constants import ReviewStar, Course
 from common.constants import Status
 from apps.users.models import Profile
 from apps.masters.models import Address
@@ -46,21 +46,23 @@ class Restaurant(Base):
         ordering = ('name',)
 
 
-class Dish(Base):
+class FoodItem(Base):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField('Rs amount', max_digits=8, decimal_places=2, blank=True, null=True)
-    date = models.DateField(default=date.today)
     image = models.ImageField(upload_to="restaurants/dishes", blank=True, null=True)
+    cuisine = models.ForeignKey(CuisineType, null=True, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.CASCADE, related_name='dishes')
+    order_count = models.IntegerField(default=0)
+    course = models.SmallIntegerField(_("Course"), choices=Course.FieldStr.items(), default=Course.MainCourse)
 
     def __unicode__(self):
         return self.name
 
     class Meta:
-        db_table = "fab_dish"
-        verbose_name = _("fab_dish")
-        verbose_name_plural = _("fab_dishes")
+        db_table = "fab_food"
+        verbose_name = _("fab_food")
+        verbose_name_plural = _("fab_foods")
         ordering = ('name',)
 
 
