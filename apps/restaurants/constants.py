@@ -12,12 +12,15 @@ class ReviewStar:
         Five: "Five"
     }
 
+
 class Course:
     Starter = 1
     MainCourse = 2
     Desert = 3
+    Other = 4
     FieldStr = {
         Starter: "Starter",
         MainCourse: "Main Course",
-        Desert: "Desert"
+        Desert: "Desert",
+        Other: "Other"
     }

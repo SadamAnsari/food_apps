@@ -27,8 +27,9 @@ class FoodItemForm(forms.ModelForm):
     image = forms.ImageField(required=False)
     cuisine = forms.ModelChoiceField(queryset=CuisineType.objects.all())
     restaurant = forms.ModelChoiceField(queryset=Restaurant.objects.all())
-    course = forms.IntegerField(widget=forms.Select(choices=Course.FieldStr.items()))
+    course = forms.IntegerField(required=False)
 
     class Meta:
         model = FoodItem
-        fields = ('name', 'description', 'price', 'image', 'cuisine', 'restaurant', 'course', 'order_count')
+        exclude = ('order_count', )
+        fields = ('name', 'description', 'price', 'image', 'cuisine', 'restaurant', 'course')

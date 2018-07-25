@@ -7,7 +7,8 @@ from apps.users.forms import EditAddressForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from apps.users.models import Profile
-from apps.restaurants.models import CuisineType, Restaurant, RestaurantCuisine
+from apps.restaurants.models import CuisineType, Restaurant, RestaurantCuisine, FoodItem
+from .constants import Course
 
 logger = logging.getLevelName(__file__)
 
@@ -84,7 +85,7 @@ def update_restaurant(request, id):
 @login_required
 def delete_restaurant(request, id):
     profile = Profile.objects.get(user__id=request.user.id)
-    restaurant = Restaurant.objects.get(pk=id)
+    restaurant = get_object_or_404(Restaurant, pk=id)
     restaurant.delete()
     messages.success(request, 'Restaurant(%s) deleted successfully.' % restaurant.name)
     restaurants = Restaurant.objects.filter(user__id=profile.id)
@@ -96,7 +97,62 @@ def delete_restaurant(request, id):
 def add_food_item(request):
     restaurants = Restaurant.objects.all()
     cuisine_types = CuisineType.objects.order_by('name')
-    form = FoodItemForm()
-    data = {'form': form, 'restaurants': restaurants, 'cuisine_types': cuisine_types}
-    return render(request, template_name="restaurants/food_item.html", context=data)
+    if request.method == "POST":
+        form = FoodItemForm(request.POST or None, request.FILES or None)
+        if request.POST and form.is_valid():
+            instance = form.save()
+            messages.info(request, "Food Item(%s) added successfully." % instance.name)
+            return redirect("restaurant:view_food_item")
+        else:
+            messages.error(request, "Please correct the below error(s).")
+    else:
+        form = FoodItemForm()
+    data = {'form': form, 'restaurants': restaurants, 'cuisine_types': cuisine_types,
+            'courses': Course.FieldStr.items()}
+    return render(request, template_name="restaurants/add_food_item.html", context=data)
 
+
+@login_required
+def view_food_item(request):
+    profile = Profile.objects.get(user__id=request.user.id)
+    restaurants = Restaurant.objects.filter(user__id=profile.id)
+    data = {}
+    for res in restaurants:
+        food_items = FoodItem.objects.filter(restaurant__id=res.id)
+        data[res] = food_items
+    result = {"data": data}
+    return render(request, template_name="restaurants/view_food_item.html", context=result)
+
+
+def update_food_item(request, id):
+    food_item = get_object_or_404(FoodItem, pk=id)
+    restaurants = Restaurant.objects.all()
+    cuisine_types = CuisineType.objects.order_by('name')
+    if request.method == "POST":
+        form = FoodItemForm(request.POST or None, request.FILES or None, instance=food_item)
+        if request.POST and form.is_valid():
+            form.save()
+            messages.info(request, "Food Item(%s) updated successfully." % food_item.name)
+            return redirect("restaurant:view_food_item")
+        else:
+            messages.error(request, "Please correct the below error(s).")
+    else:
+        form = FoodItemForm()
+    data = {'form': form, 'restaurants': restaurants, 'cuisine_types': cuisine_types,
+            'courses': Course.FieldStr.items(), "profile": food_item}
+    return render(request, template_name="restaurants/update_food_item.html", context=data)
+
+
+@login_required
+def delete_food_item(request, id):
+    food_item = get_object_or_404(FoodItem, pk=id)
+    food_item.delete()
+    messages.success(request, 'Food Item(%s) deleted successfully.' % food_item.name)
+    profile = Profile.objects.get(user__id=request.user.id)
+    restaurants = Restaurant.objects.filter(user__id=profile.id)
+    data = {}
+    for res in restaurants:
+        food_items = FoodItem.objects.filter(restaurant__id=res.id)
+        data[res] = food_items
+    result = {"data": data}
+    return render(request, template_name="restaurants/view_food_item.html", context=result)

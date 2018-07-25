@@ -54,7 +54,7 @@ class FoodItem(Base):
     cuisine = models.ForeignKey(CuisineType, null=True, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.CASCADE, related_name='dishes')
     order_count = models.IntegerField(default=0)
-    course = models.SmallIntegerField(_("Course"), choices=Course.FieldStr.items(), default=Course.MainCourse)
+    course = models.SmallIntegerField(_("Course"), choices=Course.FieldStr.items(), default=Course.Other)
 
     def __unicode__(self):
         return self.name
