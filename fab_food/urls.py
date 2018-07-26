@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('apps.login.urls', namespace='login')),
     url(r'^user/', include('apps.users.urls', namespace='user')),
+    url(r'^order/', include('apps.orders.urls', namespace='order')),
     url(r'^restaurant/', include('apps.restaurants.urls', namespace='restaurant')),
     url(r'^forgot_username/$', login_views.forgot_username, name='forgot_username'),
     url(r'^password_reset/$', auth_views.password_reset, {'template_name': 'registration/password_reset_form.html',

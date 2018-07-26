@@ -123,7 +123,7 @@ def view_food_item(request):
     result = {"data": data}
     return render(request, template_name="restaurants/view_food_item.html", context=result)
 
-
+@login_required
 def update_food_item(request, id):
     food_item = get_object_or_404(FoodItem, pk=id)
     restaurants = Restaurant.objects.all()

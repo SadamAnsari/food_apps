@@ -45,13 +45,8 @@
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Food System</a>
+            <a class="navbar-brand" href="#"><i class="glyphicon glyphicon-cutlery"></i> Fab Food</a>
         </div>
-
-        <ul class="nav navbar-nav navbar-left navbar-top-links">
-            <li><a href="#"><i class="fa fa-rupee fa-fw"></i>Easy Food Chain System</a></li>
-        </ul>
-
         <ul class="nav navbar-right navbar-top-links">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -109,13 +104,10 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-table fa-fw"></i> Reports<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-table fa-fw"></i>Orders<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#">Daily Reports</a>
-                            </li>
-                            <li>
-                                <a href="#">Monthly Reports</a>
+                                <a href="{% url 'order:add_order' %}">Add Order</a>
                             </li>
                         </ul>
                     </li>
@@ -145,16 +137,6 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="{% static 'fab_food/js/startmin.js' %}"></script>
-
-<script src="{% static 'fab_food/formset/jquery.formset.js' %}"></script>
-
-<script type="text/javascript">
-        $('.formset_row').formset({
-            addText: '',
-            deleteText: '',
-            prefix: 'item_set'
-        });
-</script>
 
 {% block javascript %}{% endblock %}
 

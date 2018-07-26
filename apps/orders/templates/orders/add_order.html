@@ -1,0 +1,140 @@
+{% extends 'fab_food/base.html' %}
+
+{% block title %}View Food Item{% endblock %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Order Food Items</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == 'info' or message.tags == 'success' %}
+                                    <div class="alert alert-success fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Success!  {{ message }} </strong>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger fade in">
+                                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>Error!  {{ message }} </strong>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="row">
+                            <table class="table table-hover table-striped">
+                                {% for res, vals in data.items %}
+                                    <thead><tr><td align="center" colspan="6"><h3>{{ res.name  }}</h3></td></tr></thead>
+                                    <tbody>
+                                    {% if vals %}
+                                            <tr>
+                                                <th>Sr. No</th>
+                                                <th>Image</th>
+                                                <th>Food Name </th>
+                                                <th>Price</th>
+                                                <th></th>
+                                            </tr>
+                                            {% for val in vals %}
+                                                    <tr>
+                                                        {% with val.pk|stringformat:"s" as zstr %}
+                                                        {% with "food"|add:zstr as foodid %}
+                                                        {% with "numfood"|add:zstr as foodipid %}
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>Coming Soon</td>
+                                                        <td>{{ val.name }}</td>
+                                                        <td id="{{foodid}}">{{ val.price }}</td>
+                                                        <td>
+                                                            <button type="button" id="{{foodid}}"
+                                                                    class="btn btn-secondary btn-circle decrement">
+                                                                <span class="glyphicon glyphicon-minus"></span>
+                                                            </button>
+                                                            <input type="hidden" name="{{foodid}}" value="0" id="{{foodipid}}" />
+                                                                <span class="ordernum" id="{{foodid}}"
+                                                                      style="font-size:1.2em;"> 0 </span>
+                                                            <button type="button" id="{{foodid}}"
+                                                                    class="btn btn-secondary btn-circle increment">
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                            </button>
+                                                        </td>
+                                                        {% endwith %}
+                                                        {% endwith %}
+                                                        {% endwith %}
+                                                    </tr>
+                                            {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" align="center">No Food items added by this restaurant.</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+            <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <center><h3>Cart Items</h3>
+                                <hr class="liner" />
+                                    Total : <i class="fa fa-rupee fa-fw"></i><span style="font-size:1.3em;"
+                                                                              id="totalamount">0</span>
+                                <br />
+                                <br />
+                                <a href="{% url 'order:add_cart' %}">
+                                    <button type="submit" class="btn btn-lg btn-success">Add to cart</button>
+                                </a>
+                            </center>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $('.increment').click(function(e){
+            // alert('increment');
+            var num = parseInt($(".ordernum#"+this.id).html());
+            $('.ordernum#'+this.id).html(num+1);
+            document.getElementById('num'+this.id).value = num+1;
+            var total = parseInt($('span#totalamount').html());
+            console.log(total)
+            var pr = parseInt($('td#'+this.id).html());
+            $('span#totalamount').html(pr + total)
+
+    });
+
+    $('.decrement').click(function(e){
+        // alert('decrement');
+        var num = parseInt($(".ordernum#"+this.id).html());
+        if(num>0)
+        {
+            $('.ordernum#'+this.id).html(num-1);
+            document.getElementById('num'+this.id).value = num-1;
+            var total = parseInt($('span#totalamount').html());
+            console.log(total)
+            var pr = parseInt($('td#'+this.id).html());
+            console.log(pr)
+            $('span#totalamount').html(total-pr)
+        }
+    });
+
+    </script>
+
+{% endblock %}
