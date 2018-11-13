@@ -173,6 +173,7 @@ LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
 
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError:
     raise Exception("Local settings file not configured")
+
